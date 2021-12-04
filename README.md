@@ -9,22 +9,22 @@ Final Project of Computer Vision 1430 with a self-implemented face landmark dete
 
 2. **Dataset**
 
-   * **Download WFLW Dataset**
+   (1) [Wider Facial Landmarks in-the-wild (WFLW)](https://wywu.github.io/projects/LAB/WFLW.html) is a new proposed face dataset. It contains 10000 faces (7500 for training and 2500 for testing)  with 98 fully manual annotated landmarks.
 
-     (1) [Wider Facial Landmarks in-the-wild (WFLW)](https://wywu.github.io/projects/LAB/WFLW.html) is a new proposed face dataset. It contains 10000 faces (7500 for training and 2500 for testing)  with 98 fully manual annotated landmarks.
+   (2) Download WFLW Training and Testing images at [[Google Drive](https://drive.google.com/file/d/1hzBd48JIdWTJSsATBEB_eFVvPL1bx6UC/view?usp=sharing)]
 
-     (2) WFLW Training and Testing images [[Google Drive](https://drive.google.com/file/d/1hzBd48JIdWTJSsATBEB_eFVvPL1bx6UC/view?usp=sharing)]
+   (3) Download WFLW Annotations at  [Face Annotations](https://wywu.github.io/projects/LAB/support/WFLW_annotations.tar.gz)
 
-     (3) WFLW  [Face Annotations](https://wywu.github.io/projects/LAB/support/WFLW_annotations.tar.gz)
+   (4) Unzip above two packages and put them on `./data/WFLW/`
 
-     (4) Unzip above two packages and put them on `./data/WFLW/`
+   (5) Move `Mirror98.txt` to `WFLW/WFLW_annotations`
 
-     (5) move `Mirror98.txt` to `WFLW/WFLW_annotations`
+   (6) Preprocess the dataset
 
-     ```shell
-     $ cd data 
-     $ python3 SetPreparation.py
-     ```
+   ```shell
+   $ cd data 
+   $ python3 SetPreparation.py
+   ```
 
 3. **Train and Test**
 
@@ -47,3 +47,4 @@ Final Project of Computer Vision 1430 with a self-implemented face landmark dete
    ```
 
    
+
