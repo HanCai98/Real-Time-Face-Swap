@@ -373,18 +373,3 @@ def detect_faces(image,
     landmarks = landmarks[keep]
 
     return bounding_boxes, landmarks
-
-
-# if __name__ == '__main__':
-#     import cv2
-#     cap = cv2.VideoCapture(0)
-#     while True:
-#         ret, img = cap.read()
-#         if not ret: break
-#         bounding_boxes, landmarks = detect_faces(img)
-#         image = show_bboxes(img, bounding_boxes, landmarks)
-
-#         # image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
-#         cv2.imshow('0', image)
-#         if cv2.waitKey(10) == 27:
-#             break

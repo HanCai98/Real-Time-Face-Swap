@@ -1,19 +1,19 @@
 import argparse
-
 import numpy as np
 import cv2
+import os
 
 import torch
 import torchvision
 
 from models.pfld import PFLDInference, AuxiliaryNet
 from mtcnn.detector import detect_faces
+from face_change.transformation import transform
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def main(args):
-
     checkpoint = torch.load(args.model_path, map_location=device)
     pfld_backbone = PFLDInference().to(device)
     pfld_backbone.load_state_dict(checkpoint['pfld_backbone'])
@@ -23,10 +23,32 @@ def main(args):
         [torchvision.transforms.ToTensor()])
 
     cap = cv2.VideoCapture(0)
+    if not cap.isOpened():
+        print("No camera found or error opening camera; using a static image instead.")
+
+    # store all the mask files name and label files name
+    labels_path = 'conf'
+    labels_files= os.listdir(labels_path)
+    labels_files.sort(key= lambda x:int(x[5:7]))
+
+    masks_path = 'masks'
+    masks_files = os.listdir(masks_path)
+    masks_files.sort(key= lambda x:int(x[5:7]))
+
+    # get the first mask
+    number = 0
+    change_mask = True
+
     while True:
-        ret, img = cap.read()
-        if not ret: break
+        success, img = cap.read()
+        if not success: 
+            break
         height, width = img.shape[:2]
+
+        # number = 0
+        mask = masks_files[number]
+        mask_indices = labels_files[number]
+        
         bounding_boxes, landmarks = detect_faces(img)
         for box in bounding_boxes:
             x1, y1, x2, y2 = (box[:4] + 0.5).astype(np.int32)
@@ -63,11 +85,25 @@ def main(args):
             pre_landmark = landmarks[0]
             pre_landmark = pre_landmark.cpu().detach().numpy().reshape(
                 -1, 2) * [size, size] - [edx1, edy1]
+            
+            print(len(pre_landmark))
+            if len(pre_landmark) != 0:
+                img = transform(pre_landmark, img, '../masks/' + mask, '../conf/' + mask_indices)
+                change_mask = True
+            # elif not pre_landmark:
+            #     if number < 14 and change_mask:
+            #         number += 1
+            #         change_mask = False
+            #     elif number >= 14 and change_mask:
+            #         number = 0
+            #         change_mask = False
+
 
             for (x, y) in pre_landmark.astype(np.int32):
                 cv2.circle(img, (x1 + x, y1 + y), 1, (0, 0, 255))
-
+        # print(img.shape)
         cv2.imshow('face_landmark_68', img)
+
         if cv2.waitKey(10) == 27:
             break
 

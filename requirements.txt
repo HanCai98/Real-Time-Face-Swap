@@ -3,3 +3,4 @@ numpy==1.17.2
 torch==1.2.0
 opencv_python==4.1.0.25
 tensorboardX==1.8
+scikit-image==0.17.2 
