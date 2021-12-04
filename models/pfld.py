@@ -1,13 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding:utf-8 -*-
-
-######################################################
-#
-# pfld.py -
-# written by  zhaozhichao
-#
-######################################################
-
 import torch
 import torch.nn as nn
 import math
