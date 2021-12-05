@@ -62,4 +62,4 @@ Final Project of Computer Vision 1430 with a self-implemented face landmark dete
    ```
 
 5. **Result**
-   ![](images/output.gif)
+   <img src="images/output.gif" style="zoom:50%;" />
