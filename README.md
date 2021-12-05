@@ -46,5 +46,20 @@ Final Project of Computer Vision 1430 with a self-implemented face landmark dete
    $ python3 test.py
    ```
 
-   
 
+4. **Face Changing**
+
+   (1) Extract and save the video frames
+
+   ```shell
+   $ python3 main.py
+   ```
+
+   (2) Create the output video using saved frames
+
+   ```shell
+   $ python3 transfer_to_video.py
+   ```
+
+5. **Result**
+   - ![](images/output.gif)
