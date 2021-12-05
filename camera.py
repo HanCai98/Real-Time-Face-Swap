@@ -1,5 +1,6 @@
 import argparse
 import numpy as np
+import time
 import cv2
 import os
 
@@ -38,6 +39,7 @@ def main(args):
     # get the first mask
     number = 0
     change_mask = True
+    pTime = 0
 
     while True:
         success, img = cap.read()
@@ -50,6 +52,7 @@ def main(args):
         mask_indices = labels_files[number]
         
         bounding_boxes, landmarks = detect_faces(img)
+        face_detect  = False
         for box in bounding_boxes:
             x1, y1, x2, y2 = (box[:4] + 0.5).astype(np.int32)
 
@@ -85,31 +88,42 @@ def main(args):
             
             input = transform(input).unsqueeze(0).to(device)
             _, landmarks = pfld_backbone(input)
-            # _, landmarks = pfld_backbone(img)
             pre_landmark = landmarks[0]
             pre_landmark = pre_landmark.cpu().detach().numpy().reshape(
                 -1, 2) * [size, size] - [edx1, edy1]
             
-            print(len(pre_landmark))
-            if len(pre_landmark) != 0:
-                img = trans(pre_landmark, img, 'masks/' + mask, 'conf/' + mask_indices)
-                change_mask = True
-            elif not pre_landmark:
-                if number < 14 and change_mask:
-                    number += 1
-                    change_mask = False
-                elif number >= 14 and change_mask:
-                    number = 0
-                    change_mask = False
-
+            # print(pre_landmark.shape)
+            new_landmarks = pre_landmark
+            new_landmarks[:,0] += x1
+            new_landmarks[:,1] += y1
 
             for (x, y) in pre_landmark.astype(np.int32):
+                face_detect = True
                 cv2.circle(img, (x1 + x, y1 + y), 1, (0, 0, 255))
-        print(img.shape)
-        cv2.imshow('face_landmark_68', img)
 
-        if cv2.waitKey(10) == 27:
-            break
+        print(face_detect) 
+        if face_detect:
+            img = trans(new_landmarks, img, 'masks/' + mask, 'conf/' + mask_indices)
+            change_mask = True
+        else:
+            if number < 14 and change_mask:
+                number += 1
+                change_mask = False
+            elif number >= 14 and change_mask:
+                number = 0
+                change_mask = False
+
+        cTime = time.time()
+        fps = 1 / (cTime - pTime)
+        pTime = cTime
+        cv2.putText(img, f'FPS: {int(fps)}', (20, 70), cv2.FONT_HERSHEY_PLAIN, 3, (0, 255, 0), 3)
+       
+        cv2.imshow('Face Changing', img)
+        cv2.waitKey(1)
+        cv2.moveWindow('Face Changing', 40,30)
+
+        # if cv2.waitKey(10) == 27:
+        #     break
 
 
 def parse_args():

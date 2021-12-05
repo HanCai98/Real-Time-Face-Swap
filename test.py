@@ -1,8 +1,3 @@
-# ------------------------------------------------------------------------------
-# Copyright (c) Zhichao Zhao
-# Licensed under the MIT License.
-# Created by Zhichao zhao(zhaozhichao4515@gmail.com)
-# ------------------------------------------------------------------------------
 import argparse
 import time
 
