@@ -1,6 +1,5 @@
 import argparse
 import numpy as np
-import time
 import cv2
 import os
 
@@ -13,7 +12,6 @@ from face_change.transformation import trans
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-
 def main(args):
     checkpoint = torch.load(args.model_path, map_location=device)
     pfld_backbone = PFLDInference().to(device)
@@ -23,7 +21,7 @@ def main(args):
     transform = torchvision.transforms.Compose(
         [torchvision.transforms.ToTensor()])
 
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture("video.mp4")
     if not cap.isOpened():
         print("No camera found or error opening camera; using a static image instead.")
 
@@ -39,7 +37,6 @@ def main(args):
     # get the first mask
     number = 0
     change_mask = True
-    pTime = 0
 
     while True:
         success, img = cap.read()
@@ -101,7 +98,7 @@ def main(args):
                 face_detect = True
                 cv2.circle(img, (x1 + x, y1 + y), 1, (0, 0, 255))
 
-        print(face_detect) 
+        # print(face_detect) 
         if face_detect:
             img = trans(new_landmarks, img, 'masks/' + mask, 'conf/' + mask_indices)
             change_mask = True
@@ -113,17 +110,12 @@ def main(args):
                 number = 0
                 change_mask = False
 
-        cTime = time.time()
-        fps = 1 / (cTime - pTime)
-        pTime = cTime
-        cv2.putText(img, f'FPS: {int(fps)}', (20, 70), cv2.FONT_HERSHEY_PLAIN, 3, (0, 255, 0), 3)
-       
+        # print(img.shape)
         cv2.imshow('Face Changing', img)
-        cv2.waitKey(1)
-        cv2.moveWindow('Face Changing', 40,30)
+        cv2.moveWindow('Face Changing', 40, 30)
 
-        # if cv2.waitKey(10) == 27:
-        #     break
+        if cv2.waitKey(10) == 27:
+            break
 
 
 def parse_args():
