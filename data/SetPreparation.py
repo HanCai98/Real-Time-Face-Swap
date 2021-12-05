@@ -1,4 +1,3 @@
-#-*- coding: utf-8 -*-
 import os
 import numpy as np
 import cv2
@@ -28,14 +27,7 @@ class ImageDate():
     def __init__(self, line, imgDir, image_size=112):
         self.image_size = image_size
         line = line.strip().split()
-        #0-195: landmark 坐标点  196-199: bbox 坐标点;
-        #200: 姿态(pose)         0->正常姿态(normal pose)          1->大的姿态(large pose)
-        #201: 表情(expression)   0->正常表情(normal expression)    1->夸张的表情(exaggerate expression)
-        #202: 照度(illumination) 0->正常照明(normal illumination)  1->极端照明(extreme illumination)
-        #203: 化妆(make-up)      0->无化妆(no make-up)             1->化妆(make-up)
-        #204: 遮挡(occlusion)    0->无遮挡(no occlusion)           1->遮挡(occlusion)
-        #205: 模糊(blur)         0->清晰(clear)                    1->模糊(blur)
-        #206: 图片名称
+       
         assert(len(line) == 207)
         self.list = line
         self.landmark = np.asarray(list(map(float, line[:196])), dtype=np.float32).reshape(-1, 2)
@@ -170,6 +162,7 @@ class ImageDate():
 
             labels.append(label)
         return labels
+        
 def get_dataset_list(imgDir, outDir, landmarkDir, is_train):
     with open(landmarkDir,'r') as f:
         lines = f.readlines()

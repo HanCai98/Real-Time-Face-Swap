@@ -1,9 +1,11 @@
 import numpy as np
 import cv2
 import sys
+import random
 sys.path.append('..')
 
 from torch.utils import data
+from skimage.transform import resize
 from torch.utils.data import DataLoader
 
 
@@ -53,7 +55,7 @@ def random_noise(img, annotation, limit=[0, 0.2], p=0.5):
 
 def random_brightness(img, annotation, brightness=0.3):
     alpha = 1 + np.random.uniform(-brightness, brightness)
-    img = alpha * image
+    img = alpha * img
     img = np.clip(img, 0, 255).astype(np.uint8)
     return img, annotation
 
@@ -69,7 +71,7 @@ def random_contrast(img, annotation, contrast=0.3):
 
 
 def random_saturation(img, annotation, saturation=0.5):
-    coef = nd.array([[[0.299, 0.587, 0.114]]])
+    coef = np.array([[[0.299, 0.587, 0.114]]])
     alpha = np.random.uniform(-saturation, saturation)
     gray = img * coef
     gray = np.sum(gray, axis=2, keepdims=True)

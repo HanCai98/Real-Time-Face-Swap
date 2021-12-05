@@ -145,13 +145,3 @@ class AuxiliaryNet(nn.Module):
 
         return x
 
-
-# if __name__ == '__main__':
-#     input = torch.randn(1, 3, 112, 112)
-#     pfld_backbone = PFLDInference()
-#     auxiliarynet = AuxiliaryNet()
-#     features, landmarks = pfld_backbone(input)
-#     angle = auxiliarynet(features)
-
-#     print("angle.shape:{0:}, landmarks.shape: {1:}".format(
-#         angle.shape, landmarks.shape))

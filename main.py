@@ -95,13 +95,19 @@ def main(args):
             new_landmarks[:,0] += x1
             new_landmarks[:,1] += y1
 
-            for (x, y) in pre_landmark.astype(np.int32):
-                face_detect = True
-                cv2.circle(img, (x1 + x, y1 + y), 1, (0, 0, 255))
+            face_detect = True
 
-        # print(face_detect) 
+            # for (x, y) in pre_landmark.astype(np.int32):
+            #     face_detect = True
+            #     cv2.circle(img, (x1 + x, y1 + y), 1, (0, 0, 255))
+
+        # print(face_detect)
         if face_detect:
             img = trans(new_landmarks, img, 'masks/' + mask, 'conf/' + mask_indices)
+            cv2.imshow('Face Changing', img)
+            cv2.moveWindow('Face Changing', 40, 30)
+            cv2.imwrite('output_images/'+str(c) + '.jpg', img) #存储为图像
+            c = c+1
             change_mask = True
         else:
             if number < 14 and change_mask:
@@ -110,12 +116,6 @@ def main(args):
             elif number >= 14 and change_mask:
                 number = 0
                 change_mask = False
-
-        print(img.shape)
-        cv2.imshow('Face Changing', img)
-        cv2.moveWindow('Face Changing', 40, 30)
-        cv2.imwrite('output_images/'+str(c) + '.jpg', img) #存储为图像
-        c = c+1
 
         if cv2.waitKey(10) == 27:
             break
