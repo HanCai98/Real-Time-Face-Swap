@@ -8,7 +8,7 @@ import torchvision
 
 from models.pfld import PFLDInference, AuxiliaryNet
 from mtcnn.detector import detect_faces
-from face_change.transformation import transform
+from face_change.transformation import trans
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -75,33 +75,37 @@ def main(args):
             edy2 = max(0, y2 - height)
 
             cropped = img[y1:y2, x1:x2]
+            
+            
             if (edx1 > 0 or edy1 > 0 or edx2 > 0 or edy2 > 0):
                 cropped = cv2.copyMakeBorder(cropped, edy1, edy2, edx1, edx2,
                                              cv2.BORDER_CONSTANT, 0)
 
             input = cv2.resize(cropped, (112, 112))
+            
             input = transform(input).unsqueeze(0).to(device)
             _, landmarks = pfld_backbone(input)
+            # _, landmarks = pfld_backbone(img)
             pre_landmark = landmarks[0]
             pre_landmark = pre_landmark.cpu().detach().numpy().reshape(
                 -1, 2) * [size, size] - [edx1, edy1]
             
             print(len(pre_landmark))
             if len(pre_landmark) != 0:
-                img = transform(pre_landmark, img, '../masks/' + mask, '../conf/' + mask_indices)
+                img = trans(pre_landmark, img, 'masks/' + mask, 'conf/' + mask_indices)
                 change_mask = True
-            # elif not pre_landmark:
-            #     if number < 14 and change_mask:
-            #         number += 1
-            #         change_mask = False
-            #     elif number >= 14 and change_mask:
-            #         number = 0
-            #         change_mask = False
+            elif not pre_landmark:
+                if number < 14 and change_mask:
+                    number += 1
+                    change_mask = False
+                elif number >= 14 and change_mask:
+                    number = 0
+                    change_mask = False
 
 
             for (x, y) in pre_landmark.astype(np.int32):
                 cv2.circle(img, (x1 + x, y1 + y), 1, (0, 0, 255))
-        # print(img.shape)
+        print(img.shape)
         cv2.imshow('face_landmark_68', img)
 
         if cv2.waitKey(10) == 27:
