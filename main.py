@@ -21,7 +21,7 @@ def main(args):
     transform = torchvision.transforms.Compose(
         [torchvision.transforms.ToTensor()])
 
-    cap = cv2.VideoCapture("video.mp4")
+    cap = cv2.VideoCapture("example.mp4")
     if not cap.isOpened():
         print("No camera found or error opening camera; using a static image instead.")
 
@@ -37,6 +37,7 @@ def main(args):
     # get the first mask
     number = 0
     change_mask = True
+    c = 0
 
     while True:
         success, img = cap.read()
@@ -110,12 +111,17 @@ def main(args):
                 number = 0
                 change_mask = False
 
-        # print(img.shape)
+        print(img.shape)
         cv2.imshow('Face Changing', img)
         cv2.moveWindow('Face Changing', 40, 30)
+        cv2.imwrite('output_images/'+str(c) + '.jpg', img) #存储为图像
+        c = c+1
 
         if cv2.waitKey(10) == 27:
             break
+    
+    cap.release()
+    cv2.destroyAllWindows()
 
 
 def parse_args():
