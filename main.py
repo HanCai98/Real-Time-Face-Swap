@@ -21,7 +21,7 @@ def main(args):
     transform = torchvision.transforms.Compose(
         [torchvision.transforms.ToTensor()])
 
-    cap = cv2.VideoCapture("example.mp4")
+    cap = cv2.VideoCapture("videos/video.mp4")
     if not cap.isOpened():
         print("No camera found or error opening camera; using a static image instead.")
 
