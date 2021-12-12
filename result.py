@@ -67,7 +67,7 @@ def main(args):
         
 
         for (x, y) in pre_landmark.astype(np.int32):
-            cv2.circle(img, (x1 + x, y1 + y), 2, (0, 0, 255))
+            cv2.circle(img, (x1 + x, y1 + y), 2, (0, 0, 255), 2)
             
     cv2.imwrite("face_putput.jpeg", img)
     cv2.destroyAllWindows()
