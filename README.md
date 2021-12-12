@@ -63,3 +63,9 @@ Final Project of Computer Vision 1430 with a self-implemented face landmark dete
 
 5. **Result**
    <img src="images/output.gif" style="zoom:50%;" />
+
+5. **Reference**
+
+   PFLD: A Practical Facial Landmark Detector https://arxiv.org/pdf/1902.10859.pdf
+
+   
