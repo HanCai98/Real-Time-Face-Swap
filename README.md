@@ -66,7 +66,9 @@ Final Project of CSCI 1430 with a self-implemented face landmark detection model
  
 6. **Report and Poster**
 
-   Our final report and poster can be found here https://drive.google.com/drive/folders/0AO7HmksnDnINUk9PVA
+   Final report: https://drive.google.com/file/d/1hst6AY2cbunJz6_fLI4KINTOAoNz8cAf/view?usp=sharing
+   
+   Poster: https://drive.google.com/file/d/1fDGP9QRNnN8bLNO9HHJ1RIW31amfG5Jz/view?usp=sharing
 
 7. **Reference**
 
