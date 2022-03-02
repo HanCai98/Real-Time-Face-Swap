@@ -63,8 +63,12 @@ Final Project of CSCI 1430 with a self-implemented face landmark detection model
 
 5. **Result**
    <img src="images/output.gif" style="zoom:50%;" />
+ 
+6. **Report and Poster**
 
-5. **Reference**
+   Our final report and poster can be found here https://drive.google.com/drive/folders/0AO7HmksnDnINUk9PVA
+
+7. **Reference**
 
    PFLD: A Practical Facial Landmark Detector https://arxiv.org/pdf/1902.10859.pdf
 
